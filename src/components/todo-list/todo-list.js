@@ -1,27 +1,48 @@
-import React from "react";
+import React, {Component} from "react";
 
 import TodoListItem from "../todo-list-item/todo-list-item";
 import "./todo-list.css";
 
-const TodoList = ({todos}) => {
+export default class TodoList extends Component {
 
-  const elements = todos.map(item => {
-    const {value, status, ...props} = item;
-    const inputEdit = <input type="text" className="edit" value="Editing task" />;
+  render() {
+    const {todos} = this.props;
+
+    const elements = todos.map(item => {
+      const {id, value, status, ...props} = item;
+
+      return (
+        <TodoListItem {...item}/>
+      )
+    })
 
     return (
-      <li className={status}>
-        <TodoListItem {...item}/>
-        {(status === 'editing') ? inputEdit : ''}
-      </li>
+      <ul className="todo-list">
+        {elements}
+      </ul>
     )
-  })
-
-  return (
-    <ul className="todo-list">
-      {elements}
-    </ul>
-  )
+  }
 }
-
-export default TodoList;
+//
+// const TodoList1 = ({todos}) => {
+//
+//   const elements = todos.map(item => {
+//     const {value, status, id, ...props} = item;
+//     const inputEdit = <input type="text" className="edit" defaultValue="Editing task" />;
+//
+//     return (
+//       <li key={item.id} className={status}>
+//         <TodoListItem {...item}/>
+//         {(status === 'editing') ? inputEdit : ''}
+//       </li>
+//     )
+//   })
+//
+//   return (
+//     <ul className="todo-list">
+//       {elements}
+//     </ul>
+//   )
+// }
+//
+// export default TodoList1;
