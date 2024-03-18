@@ -8,15 +8,15 @@ export default class TodoListItem extends Component {
   }
 
   onValueClick = () => {
-    this.setState((state) => {
+    this.setState(({done}) => {
       return {
-        done: !state.done
+        done: !done
       }
     })
   }
 
   render() {
-    const {value, status, id} = this.props;
+    const {value, status, id, onDeleted} = this.props;
     const {done} = this.state;
 
     let classNames = '';
@@ -31,7 +31,7 @@ export default class TodoListItem extends Component {
     return (
       <li key={id} className={classNames}>
         <div className="view">
-          <input className="toggle" type="checkbox" onClick={this.onValueClick} checked={checked}/>
+          <input className="toggle" type="checkbox" onClick={this.onValueClick} defaultChecked={checked}/>
           <label>
             <span className='description' onClick={this.onValueClick}>
               {value}
@@ -39,7 +39,7 @@ export default class TodoListItem extends Component {
             <span className="created">created 17 seconds ago</span>
           </label>
           <button className="icon icon-edit"></button>
-          <button className="icon icon-destroy"></button>
+          <button className="icon icon-destroy" onClick={onDeleted}></button>
         </div>
         {(status === 'editing') ? inputEdit : ''}
       </li>
