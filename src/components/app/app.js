@@ -7,8 +7,11 @@ import InputPanel from "../input-panel/input-panel";
 import TodoList from "../todo-list/todo-list";
 import Filter from "../filters/filters";
 import Footer from "../footer/footer";
+import ItemAddForm from "../itemAddForm/itemAddForm";
 
 export default class App extends Component {
+
+  maxId = 100;
 
   state = {
     todoData: [
@@ -32,12 +35,31 @@ export default class App extends Component {
     })
   }
 
+  addItem = (text) => {
+    const newItem = {
+      value: text,
+      status: '',
+      id: this.maxId + 1
+    }
+
+    this.setState(({todoData}) => {
+      const newArr = [
+        ...todoData,
+        newItem]
+
+      return {
+        todoData: newArr
+      }
+    })
+  }
+
+
   render() {
     return (
       <section className="todoapp">
         <header className="header">
           <AppHeader/>
-          <InputPanel/>
+          <InputPanel addItem={this.addItem}/>
         </header>
 
         <section className="main">
