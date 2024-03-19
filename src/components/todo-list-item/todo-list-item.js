@@ -8,7 +8,7 @@ export default class TodoListItem extends Component {
     const {
       value, status,
       id, onDeleted,
-      onToggleDone, done
+      onToggleDone, done, createdAt
     } = this.props;
 
     let classNames = '';
@@ -30,7 +30,7 @@ export default class TodoListItem extends Component {
             <span className='description'>
               {value}
             </span>
-            <span className="created">created 17 seconds ago</span>
+            <span className="created">created {createdAt}</span>
           </label>
           <button className="icon icon-edit"></button>
           <button className="icon icon-destroy" onClick={onDeleted}></button>

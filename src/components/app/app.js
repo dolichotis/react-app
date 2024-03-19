@@ -1,3 +1,5 @@
+import { formatDistanceToNow } from 'date-fns';
+
 import React, {Component} from "react";
 
 import './app.css'
@@ -72,7 +74,8 @@ export default class App extends Component {
       value,
       status: '',
       done: false,
-      id: this.maxId++
+      id: this.maxId++,
+      createdAt: new Date()
     }
   }
 
@@ -102,7 +105,11 @@ export default class App extends Component {
         <section className="main">
           <TodoList todos={this.state.todoData}
                     onDeleted={this.deleteItem}
-                    onToggleDone={this.onToggleDone}/>
+                    onToggleDone={this.onToggleDone}
+                    todos={this.state.todoData.map(todo => ({
+                      ...todo,
+                      createdAt: formatDistanceToNow(new Date(todo.createdAt), { addSuffix: true }) // Определяем время, прошедшее с момента создания задачи
+                    }))}/>
           <Footer leftCount={leftCount}/>
         </section>
 
