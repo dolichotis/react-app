@@ -3,21 +3,13 @@ import React, {Component} from "react";
 import "./todo-list-item.css";
 
 export default class TodoListItem extends Component {
-  state = {
-    done: false
-  }
-
-  onValueClick = () => {
-    this.setState(({done}) => {
-      return {
-        done: !done
-      }
-    })
-  }
 
   render() {
-    const {value, status, id, onDeleted} = this.props;
-    const {done} = this.state;
+    const {
+      value, status,
+      id, onDeleted,
+      onToggleDone, done
+    } = this.props;
 
     let classNames = '';
     let checked = false;
@@ -31,9 +23,11 @@ export default class TodoListItem extends Component {
     return (
       <li key={id} className={classNames}>
         <div className="view">
-          <input className="toggle" type="checkbox" onClick={this.onValueClick} defaultChecked={checked}/>
-          <label>
-            <span className='description' onClick={this.onValueClick}>
+          <input id={id} className="toggle" type="checkbox"
+                 onChange={() => onToggleDone(id)}
+                 defaultChecked={checked}/>
+          <label htmlFor={id}>
+            <span className='description'>
               {value}
             </span>
             <span className="created">created 17 seconds ago</span>

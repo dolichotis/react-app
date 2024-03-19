@@ -7,7 +7,6 @@ import InputPanel from "../input-panel/input-panel";
 import TodoList from "../todo-list/todo-list";
 import Filter from "../filters/filters";
 import Footer from "../footer/footer";
-import ItemAddForm from "../itemAddForm/itemAddForm";
 
 export default class App extends Component {
 
@@ -15,10 +14,11 @@ export default class App extends Component {
 
   state = {
     todoData: [
-      {value: 'Completed task', status: 'completed', id: 1},
-      {value: 'Make awesome app', status: 'editing', id: 2},
-      {value: 'Active  task', status: '', id: 3}
-    ]
+      this.createTodoItem('Completed task'),
+      this.createTodoItem('Make awesome app'),
+      this.createTodoItem('Active  task')
+    ],
+    value: ''
   }
 
   deleteItem = (id) => {
@@ -36,11 +36,7 @@ export default class App extends Component {
   }
 
   addItem = (text) => {
-    const newItem = {
-      value: text,
-      status: '',
-      id: this.maxId + 1
-    }
+    const newItem = this.createTodoItem(text);
 
     this.setState(({todoData}) => {
       const newArr = [
@@ -48,29 +44,70 @@ export default class App extends Component {
         newItem]
 
       return {
-        todoData: newArr
+        todoData: newArr,
+        value: ''
       }
     })
   }
 
+  onToggleDone = (id) => {
+    this.setState(({todoData}) => {
+      const idx = todoData.findIndex((el) => el.id === id);
+      const oldItem = todoData[idx];
+      const newItem = {...oldItem, done: !oldItem.done};
+
+      const newArray = [
+        ...todoData.slice(0, idx),
+        newItem,
+        ...todoData.slice(idx + 1)];
+
+      return {
+        todoData: newArray
+      }
+    })
+  }
+
+  createTodoItem(value) {
+    return {
+      value,
+      status: '',
+      done: false,
+      id: this.maxId++
+    }
+  }
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    this.addItem(this.state.value);
+  }
+
+  onValueChange = (e) => {
+    this.setState({
+      value: e.target.value
+    });
+  }
 
   render() {
+    const leftCount = this.state.todoData.length -
+      this.state.todoData.filter((el) => el.done).length;
+
     return (
       <section className="todoapp">
-        <header className="header">
+        <form className="header" onSubmit={this.onSubmit}>
           <AppHeader/>
-          <InputPanel addItem={this.addItem}/>
-        </header>
+          <InputPanel value={this.state.value}
+                      onValueChange={this.onValueChange}/>
+        </form>
 
         <section className="main">
           <TodoList todos={this.state.todoData}
-                    onDeleted={this.deleteItem}/>
-          <Footer/>
+                    onDeleted={this.deleteItem}
+                    onToggleDone={this.onToggleDone}/>
+          <Footer leftCount={leftCount}/>
         </section>
 
       </section>
     );
   }
-
 
 };
