@@ -1,4 +1,4 @@
-import { formatDistanceToNow } from 'date-fns';
+import {formatDistanceToNow} from 'date-fns';
 
 import React, {Component} from "react";
 
@@ -20,7 +20,8 @@ export default class App extends Component {
       this.createTodoItem('Make awesome app'),
       this.createTodoItem('Active  task')
     ],
-    value: ''
+    value: '',
+    filter: 'all'
   }
 
   deleteItem = (id) => {
@@ -35,6 +36,12 @@ export default class App extends Component {
         todoData: newArray
       }
     })
+  }
+
+  deleteAllItems = () => {
+    this.setState({
+      todoData: []
+    });
   }
 
   addItem = (text) => {
@@ -87,12 +94,31 @@ export default class App extends Component {
   onValueChange = (e) => {
     this.setState({
       value: e.target.value
-    });
+    })
+  }
+
+  filter(items, filter) {
+    switch (filter) {
+      case 'all':
+        return items;
+      case 'active':
+        return items.filter((item) => !item.done);
+      case 'completed':
+        return items.filter((item) => item.done);
+      default:
+        return items;
+    }
+  }
+
+  onFilterChange = (filter) => {
+    this.setState({filter})
   }
 
   render() {
     const leftCount = this.state.todoData.length -
       this.state.todoData.filter((el) => el.done).length;
+
+    const visibleItems = this.filter(this.state.todoData, this.state.filter);
 
     return (
       <section className="todoapp">
@@ -103,14 +129,16 @@ export default class App extends Component {
         </form>
 
         <section className="main">
-          <TodoList todos={this.state.todoData}
-                    onDeleted={this.deleteItem}
+          <TodoList onDeleted={this.deleteItem}
                     onToggleDone={this.onToggleDone}
-                    todos={this.state.todoData.map(todo => ({
+                    todos={visibleItems.map(todo => ({
                       ...todo,
-                      createdAt: formatDistanceToNow(new Date(todo.createdAt), { addSuffix: true }) // Определяем время, прошедшее с момента создания задачи
+                      createdAt: formatDistanceToNow(new Date(todo.createdAt), {addSuffix: true}) // Определяем время, прошедшее с момента создания задачи
                     }))}/>
-          <Footer leftCount={leftCount}/>
+          <Footer leftCount={leftCount}
+                  deleteAllItems={this.deleteAllItems}
+                  filter={this.state.filter}
+                  onFilterChange={this.onFilterChange}/>
         </section>
 
       </section>

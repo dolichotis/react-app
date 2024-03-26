@@ -5,12 +5,13 @@ import "./footer.css"
 export default class Footer extends Component {
   render() {
 
-    const {leftCount} = this.props;
+    const {leftCount, deleteAllItems, filter, onFilterChange} = this.props;
     return (
       <footer className="footer">
         <span className="todo-count">{leftCount} items left</span>
-        <Filter/>
-        <button className="clear-completed">Clear completed</button>
+        <Filter filter={filter}
+                onFilterChange={onFilterChange}/>
+        <button className="clear-completed" onClick={deleteAllItems}>Clear completed</button>
       </footer>
     )
   }
