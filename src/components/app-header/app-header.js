@@ -1,7 +1,8 @@
 import React from "react";
 
 import "./app-header.css";
-const AppHeader = () => {
+
+function AppHeader() {
   return <h1>todos</h1>;
 }
 

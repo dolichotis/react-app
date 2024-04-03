@@ -1,49 +1,32 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import TodoListItem from "../todo-list-item/todo-list-item";
 import "./todo-list.css";
 
 export default class TodoList extends Component {
-
   render() {
-    const {todos, onDeleted, onToggleDone} = this.props;
+    const { todos, onDeleted, onToggleDone } = this.props;
 
-    const elements = todos.map(item => {
-      const {value, status, id, ...props} = item;
+    const elements = todos.map((item) => {
+      const { id } = item;
 
       return (
-        <TodoListItem {...item} onDeleted={() => onDeleted(id)}
-                      onToggleDone={() => onToggleDone(id)}/>
-      )
-    })
+        <TodoListItem
+          key={id}
+          {...item}
+          onDeleted={() => onDeleted(id)}
+          onToggleDone={() => onToggleDone(id)}
+        />
+      );
+    });
 
-    return (
-      <ul className="todo-list">
-        {elements}
-      </ul>
-    )
+    return <ul className="todo-list">{elements}</ul>;
   }
 }
-//
-// const TodoList1 = ({todos}) => {
-//
-//   const elements = todos.map(item => {
-//     const {value, status, id, ...props} = item;
-//     const inputEdit = <input type="text" className="edit" defaultValue="Editing task" />;
-//
-//     return (
-//       <li key={item.id} className={status}>
-//         <TodoListItem {...item}/>
-//         {(status === 'editing') ? inputEdit : ''}
-//       </li>
-//     )
-//   })
-//
-//   return (
-//     <ul className="todo-list">
-//       {elements}
-//     </ul>
-//   )
-// }
-//
-// export default TodoList1;
+
+TodoList.propTypes = {
+  todos: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onDeleted: PropTypes.func.isRequired,
+  onToggleDone: PropTypes.func.isRequired,
+};

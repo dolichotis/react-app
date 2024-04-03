@@ -1,36 +1,40 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import "./filters.css";
 
 export default class Filter extends Component {
-
   buttons = [
-    {name: 'all', label: 'All'},
-    {name: 'active', label: 'Active'},
-    {name: 'completed', label: 'Completed'}
+    { name: "all", label: "All" },
+    { name: "active", label: "Active" },
+    { name: "completed", label: "Completed" },
   ];
 
   render() {
+    const { filter, onFilterChange } = this.props;
 
-    const {filter, onFilterChange} = this.props;
-
-    const buttons = this.buttons.map(({name, label}) => {
+    const buttons = this.buttons.map(({ name, label }) => {
       const isActive = filter === name;
-      const clazz = isActive ? 'selected' : '';
+      const clazz = isActive ? "selected" : "";
 
       return (
-        <li>
-          <button key={name}
-          className={clazz}
-          onClick={() => onFilterChange(name)}>{label}</button>
+        <li key={name}>
+          <button
+            key={name}
+            className={clazz}
+            onClick={() => onFilterChange(name)}
+          >
+            {label}
+          </button>
         </li>
-      )
-    })
+      );
+    });
 
-    return (
-      <ul className="filters">
-        {buttons}
-      </ul>
-    )
+    return <ul className="filters">{buttons}</ul>;
   }
 }
+
+Filter.propTypes = {
+  filter: PropTypes.string.isRequired,
+  onFilterChange: PropTypes.func.isRequired,
+};
