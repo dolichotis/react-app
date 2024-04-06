@@ -31,7 +31,7 @@ TodoList.propTypes = {
       value: PropTypes.string.isRequired,
       done: PropTypes.bool.isRequired,
       createdAt: PropTypes.string.isRequired,
-    })
+    }),
   ).isRequired,
   onDeleted: PropTypes.func.isRequired,
   onToggleDone: PropTypes.func.isRequired,
