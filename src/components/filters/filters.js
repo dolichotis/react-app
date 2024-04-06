@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import "./filters.css";
+import './filters.css';
 
 export default class Filter extends Component {
   buttons = [
-    { name: "all", label: "All" },
-    { name: "active", label: "Active" },
-    { name: "completed", label: "Completed" },
+    { name: 'all', label: 'All' },
+    { name: 'active', label: 'Active' },
+    { name: 'completed', label: 'Completed' },
   ];
 
   render() {
@@ -15,15 +15,11 @@ export default class Filter extends Component {
 
     const buttons = this.buttons.map(({ name, label }) => {
       const isActive = filter === name;
-      const clazz = isActive ? "selected" : "";
+      const clazz = isActive ? 'selected' : '';
 
       return (
         <li key={name}>
-          <button
-            key={name}
-            className={clazz}
-            onClick={() => onFilterChange(name)}
-          >
+          <button type="button" key={name} className={clazz} onClick={() => onFilterChange(name)}>
             {label}
           </button>
         </li>
