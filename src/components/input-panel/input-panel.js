@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './input-panel.css';
+import '../../index.css';
 
 function InputPanel({ onValueChange, value }) {
   return (

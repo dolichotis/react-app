@@ -2,7 +2,7 @@ import { formatDistanceToNow } from 'date-fns';
 
 import React, { Component } from 'react';
 
-import './app.css';
+import '../../index.css';
 
 import AppHeader from '../app-header/app-header';
 import InputPanel from '../input-panel/input-panel';

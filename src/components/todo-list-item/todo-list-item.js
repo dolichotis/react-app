@@ -1,32 +1,103 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import './todo-list-item.css';
+import '../../index.css';
 
-function TodoListItem({ value, status, id, onDeleted, onToggleDone, done, createdAt }) {
-  let classNames = '';
-  let checked = false;
-  if (done) {
-    classNames += ' completed';
-    checked = true;
+class TodoListItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isTimerRunning: false,
+      timeSpent: 0,
+      timer: null,
+    };
   }
 
-  const inputEdit = <input type="text" className="edit" defaultValue="Editing task" />;
+  componentWillUnmount() {
+    const { timer } = this.state;
+    if (timer) {
+      clearInterval(timer);
+    }
+  }
 
-  return (
-    <li key={id} className={classNames}>
-      <div className="view">
-        <input id={id} className="toggle" type="checkbox" onChange={() => onToggleDone(id)} defaultChecked={checked} />
-        <label htmlFor={id}>
-          <span className="description">{value}</span>
-          <span className="created">created {createdAt}</span>
-        </label>
-        <button className="icon icon-edit" type="button" aria-label="Edit" />
-        <button className="icon icon-destroy" type="button" onClick={onDeleted} aria-label="Delete" />
-      </div>
-      {status === 'editing' ? inputEdit : ''}
-    </li>
-  );
+  handleStart = () => {
+    const { isTimerRunning } = this.state;
+    if (!isTimerRunning) {
+      const timer = setInterval(() => {
+        this.setState((prevState) => ({
+          timeSpent: prevState.timeSpent + 1,
+        }));
+      }, 1000);
+      this.setState({ isTimerRunning: true, timer });
+    }
+  };
+
+  handleStop = () => {
+    const { timer, isTimerRunning } = this.state;
+    if (isTimerRunning) {
+      clearInterval(timer);
+      this.setState({ isTimerRunning: false, timer: null });
+    }
+  };
+
+  formatTime = (seconds) => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hrs > 0 ? `${hrs}:` : ''}${mins > 0 ? `${mins}:` : '0:'}${secs < 10 ? `0${secs}` : secs}`;
+  };
+
+  render() {
+    const { value, status, id, onDeleted, onToggleDone, done, createdAt } = this.props;
+    const { isTimerRunning, timeSpent } = this.state;
+
+    let classNames = '';
+    let checked = false;
+    if (done) {
+      classNames += ' completed';
+      checked = true;
+    }
+
+    const inputEdit = <input type="text" className="edit" defaultValue="Editing task" />;
+
+    return (
+      <li key={id} className={classNames}>
+        <div className="view">
+          <input
+            id={id}
+            className="toggle"
+            type="checkbox"
+            onChange={() => onToggleDone(id)}
+            defaultChecked={checked}
+          />
+          <label htmlFor={id}>
+            <span className="title">{value}</span>
+            <span className="description">
+              <button
+                className="icon icon-play"
+                type="button"
+                onClick={this.handleStart}
+                disabled={isTimerRunning}
+                aria-label="Start timer"
+              />
+              <button
+                className="icon icon-pause"
+                type="button"
+                onClick={this.handleStop}
+                disabled={!isTimerRunning}
+                aria-label="Pause timer"
+              />
+              {this.formatTime(timeSpent)}
+            </span>
+            <span className="description">created {createdAt}</span>
+          </label>
+          <button className="icon icon-edit" type="button" aria-label="Edit" />
+          <button className="icon icon-destroy" type="button" onClick={onDeleted} aria-label="Delete" />
+        </div>
+        {status === 'editing' ? inputEdit : ''}
+      </li>
+    );
+  }
 }
 
 TodoListItem.propTypes = {

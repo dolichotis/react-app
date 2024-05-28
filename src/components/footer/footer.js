@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Filter from '../filters/filters';
-import './footer.css';
+import '../../index.css';
 
 function Footer({ leftCount, deleteAllItems, filter, onFilterChange }) {
   return (
