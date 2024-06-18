@@ -17,6 +17,7 @@ class TodoListItem extends Component {
     const { timer } = this.state;
     if (timer) {
       clearInterval(timer);
+      this.setState({ timer: null });
     }
   }
 
@@ -36,7 +37,7 @@ class TodoListItem extends Component {
     const { timer, isTimerRunning } = this.state;
     if (isTimerRunning) {
       clearInterval(timer);
-      this.setState({ isTimerRunning: false, timer: null });
+      this.setState({ isTimerRunning: false });
     }
   };
 
