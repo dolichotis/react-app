@@ -70,6 +70,7 @@ export default class App extends Component {
   };
 
   onSubmit = (e) => {
+    console.log('erg');
     const { value } = this.state;
 
     e.preventDefault();
