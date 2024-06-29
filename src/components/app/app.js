@@ -37,9 +37,13 @@ export default class App extends Component {
     });
   };
 
-  deleteAllItems = () => {
-    this.setState({
-      todoData: [],
+  clearCompletedItems = () => {
+    this.setState(({ todoData }) => {
+      const newArray = todoData.filter((item) => !item.done);
+
+      return {
+        todoData: newArray,
+      };
     });
   };
 
@@ -135,7 +139,7 @@ export default class App extends Component {
           />
           <Footer
             leftCount={leftCount}
-            deleteAllItems={this.deleteAllItems}
+            clearCompletedItems={this.clearCompletedItems}
             filter={filter}
             onFilterChange={this.onFilterChange}
           />

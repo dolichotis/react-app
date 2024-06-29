@@ -6,11 +6,26 @@ import '../../index.css';
 class TodoListItem extends Component {
   constructor(props) {
     super(props);
+    const { id } = props;
+
+    const savedStartTime = parseInt(localStorage.getItem(`start-time-${id}`), 10);
+    const savedTimeSpent = parseInt(localStorage.getItem(`timer-${id}`), 10) || 0;
+
+    let timeSpent = savedTimeSpent;
+    if (savedStartTime) {
+      const currentTime = Math.floor(Date.now() / 1000);
+      timeSpent += currentTime - savedStartTime;
+    }
+
     this.state = {
-      isTimerRunning: false,
-      timeSpent: 0,
+      isTimerRunning: !!savedStartTime,
+      timeSpent,
       timer: null,
     };
+
+    if (savedStartTime) {
+      this.startTimer();
+    }
   }
 
   componentWillUnmount() {
@@ -21,23 +36,35 @@ class TodoListItem extends Component {
     }
   }
 
+  startTimer = () => {
+    const timer = setInterval(() => {
+      this.setState((prevState) => {
+        const newTimeSpent = prevState.timeSpent + 1;
+        return { timeSpent: newTimeSpent };
+      });
+    }, 1000);
+    this.setState({ timer });
+  };
+
   handleStart = () => {
+    const { id } = this.props;
     const { isTimerRunning } = this.state;
     if (!isTimerRunning) {
-      const timer = setInterval(() => {
-        this.setState((prevState) => ({
-          timeSpent: prevState.timeSpent + 1,
-        }));
-      }, 1000);
-      this.setState({ isTimerRunning: true, timer });
+      const currentTime = Math.floor(Date.now() / 1000);
+      localStorage.setItem(`start-time-${id}`, currentTime);
+      this.startTimer();
+      this.setState({ isTimerRunning: true });
     }
   };
 
   handleStop = () => {
-    const { timer, isTimerRunning } = this.state;
+    const { id } = this.props;
+    const { timer, isTimerRunning, timeSpent } = this.state;
     if (isTimerRunning) {
       clearInterval(timer);
-      this.setState({ isTimerRunning: false });
+      localStorage.setItem(`timer-${id}`, timeSpent);
+      localStorage.removeItem(`start-time-${id}`);
+      this.setState({ isTimerRunning: false, timer: null });
     }
   };
 
