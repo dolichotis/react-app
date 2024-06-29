@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Filter from '../filters/filters';
-import './footer.css';
+import '../../index.css';
 
-function Footer({ leftCount, deleteAllItems, filter, onFilterChange }) {
+function Footer({ leftCount, clearCompletedItems, filter, onFilterChange }) {
   return (
     <footer className="footer">
       <span className="todo-count">{leftCount} items left</span>
       <Filter filter={filter} onFilterChange={onFilterChange} />
-      <button type="button" className="clear-completed" onClick={deleteAllItems}>
+      <button type="button" className="clear-completed" onClick={clearCompletedItems}>
         Clear completed
       </button>
     </footer>
@@ -18,7 +18,7 @@ function Footer({ leftCount, deleteAllItems, filter, onFilterChange }) {
 
 Footer.propTypes = {
   leftCount: PropTypes.number.isRequired,
-  deleteAllItems: PropTypes.func.isRequired,
+  clearCompletedItems: PropTypes.func.isRequired,
   filter: PropTypes.string.isRequired,
   onFilterChange: PropTypes.func.isRequired,
 };

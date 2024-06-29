@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import './filters.css';
+import '../../index.css';
 
 export default class Filter extends Component {
   buttons = [

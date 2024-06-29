@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import TodoListItem from '../todo-list-item/todo-list-item';
-import './todo-list.css';
+import '../../index.css';
 
 function TodoList({ todos, onDeleted, onToggleDone }) {
   const elements = todos.map((item) => {

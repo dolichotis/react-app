@@ -2,7 +2,7 @@ import { formatDistanceToNow } from 'date-fns';
 
 import React, { Component } from 'react';
 
-import './app.css';
+import '../../index.css';
 
 import AppHeader from '../app-header/app-header';
 import InputPanel from '../input-panel/input-panel';
@@ -37,9 +37,13 @@ export default class App extends Component {
     });
   };
 
-  deleteAllItems = () => {
-    this.setState({
-      todoData: [],
+  clearCompletedItems = () => {
+    this.setState(({ todoData }) => {
+      const newArray = todoData.filter((item) => !item.done);
+
+      return {
+        todoData: newArray,
+      };
     });
   };
 
@@ -70,6 +74,7 @@ export default class App extends Component {
   };
 
   onSubmit = (e) => {
+    console.log('erg');
     const { value } = this.state;
 
     e.preventDefault();
@@ -134,7 +139,7 @@ export default class App extends Component {
           />
           <Footer
             leftCount={leftCount}
-            deleteAllItems={this.deleteAllItems}
+            clearCompletedItems={this.clearCompletedItems}
             filter={filter}
             onFilterChange={this.onFilterChange}
           />
